@@ -1,5 +1,5 @@
 {
     "buildCommand": "cd mi-portfolio && npm install && npm run build" ,
-    "outputDirectory": "dist",
+    "outputDirectory": "mi-portfolio/dist",
     "framework": "vite"
 }

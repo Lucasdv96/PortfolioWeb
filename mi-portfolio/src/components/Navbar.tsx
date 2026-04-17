@@ -11,7 +11,7 @@ const Navbar = () => {
 
       {/* Links */}
       <ul className="flex gap-9 list-none">
-        {['Skills', 'Proyectos', 'Sobre mí', 'Contacto'].map((item) => (
+        {['Skills', 'Proyectos', 'Sobre mi', 'Contacto'].map((item) => (
           <li key={item}>
               <a
             

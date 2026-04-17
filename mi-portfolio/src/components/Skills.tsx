@@ -5,12 +5,11 @@ const skills = [
     { icon: '☕', name: 'Java', level: 'Backend' },
     { icon: '🎨', name: 'HTML / CSS / JS', level: 'Frontend' },
     { icon: '🐙', name: 'Git & GitHub', level: 'Control de versiones' },
+    { icon: '🚀', name: 'Vercel', level: 'Deployment' },
+    { icon: '🤖', name: 'AI Integration', level: 'Inteligencia Artificial' },
+    { icon: '📱', name: 'React Native', level: 'Mobile' },
+    { icon: '🅺', name: 'Kotlin', level: 'Backend' },
     { icon: '⚡', name: 'Tailwind CSS', level: 'Frontend' },
-    { icon: '📱', name: 'Responsive Design', level: 'Frontend' },
-    { icon: '🔧', name: 'REST APIs', level: 'Backend' },
-    { icon: '🧪', name: 'Testing', level: 'General' },
-    { icon: '☁️', name: 'AWS', level: 'Cloud' },
-    { icon: '🐳', name: 'Docker', level: 'DevOps' },
 ]
 
 const Skills = () => {

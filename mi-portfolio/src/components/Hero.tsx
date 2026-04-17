@@ -34,13 +34,13 @@ const Hero = () => {
 
         {/* Rol */}
         <p className="text-white/40 font-semibold mb-7" style={{ fontSize: 'clamp(16px, 2.5vw, 22px)' }}>
-          Full Stack Developer Jr. &mdash; React · Node.js · SQL
+          Full Stack Developer Jr. &mdash; React · Node.js · SQL · Kotlin
         </p>
 
         {/* Descripción */}
         <p className="text-white/40 text-sm leading-relaxed max-w-lg mb-12">
           Desarrollador apasionado por construir aplicaciones web modernas, 
-          eficientes y bien diseñadas. Más de 2 años de experiencia aprendiendo y construyendo.
+          aplicaciones android y algoritmos. Más de 3 años de experiencia aprendiendo y construyendo.
         </p>
 
         {/* CTAs */}

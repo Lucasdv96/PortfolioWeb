@@ -1,7 +1,7 @@
 const stats = [
-  { num: '2+', label: 'Años estudiando' },
+  { num: '3+', label: 'Años estudiando' },
   { num: '5',  label: 'Tecnologías' },
-  { num: '3',  label: 'Proyectos' },
+  { num: '3+',  label: 'Proyectos' },
   { num: '∞',  label: 'Ganas de aprender' },
 ]
 

@@ -1,20 +1,72 @@
-/* Theme Variables */
-:root {
-  --bg-primary: #080b10;
-  --bg-secondary: #111620;
-  --bg-tertiary: #161d2c;
-  --text-primary: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.4);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --accent: #00e5a0;
+/* Dark Theme (default) */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
 }
 
+/* Light Theme */
 [data-theme='light'] {
-  --bg-primary: #f8f9fa;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f0f2f5;
-  --text-primary: #1a1a1a;
-  --text-muted: rgba(26, 26, 26, 0.6);
-  --border-color: rgba(26, 26, 26, 0.1);
-  --accent: #00a870;
+  color-scheme: light;
+}
+
+/* LIGHT MODE OVERRIDES */
+[data-theme='light'] {
+  background-color: #f8f9fa !important;
+}
+
+[data-theme='light'] .bg-\[\#080b10\] {
+  background-color: #f8f9fa !important;
+}
+
+[data-theme='light'] .bg-\[\#111620\] {
+  background-color: #ffffff !important;
+}
+
+[data-theme='light'] .bg-\[\#161d2c\] {
+  background-color: #f0f2f5 !important;
+}
+
+[data-theme='light'] .text-white {
+  color: #1a1a1a !important;
+}
+
+[data-theme='light'] .text-white\/40 {
+  color: rgba(26, 26, 26, 0.6) !important;
+}
+
+[data-theme='light'] .text-white\/20 {
+  color: rgba(26, 26, 26, 0.4) !important;
+}
+
+[data-theme='light'] .border-white\/10 {
+  border-color: rgba(26, 26, 26, 0.15) !important;
+}
+
+[data-theme='light'] .border-white\/20 {
+  border-color: rgba(26, 26, 26, 0.2) !important;
+}
+
+[data-theme='light'] .hover\:bg-\[\#161d2c\]:hover {
+  background-color: #f0f2f5 !important;
+}
+
+[data-theme='light'] .bg-\[\#00e5a0\]\/10 {
+  background-color: rgba(0, 168, 112, 0.1) !important;
+}
+
+[data-theme='light'] .border-\[\#00e5a0\]\/20 {
+  border-color: rgba(0, 168, 112, 0.2) !important;
+}
+
+[data-theme='light'] .border-\[\#00e5a0\]\/15 {
+  border-color: rgba(0, 168, 112, 0.15) !important;
+}
+
+[data-theme='light'] .text-\[\#00e5a0\] {
+  color: #00a870 !important;
+}
+
+/* Ensure smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }

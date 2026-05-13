@@ -17,16 +17,20 @@ const Navbar = () => {
       let current = ''
 
       for (const section of sections) {
-        if (section && section.getBoundingClientRect().top <= 100) {
-          current = section.id
+        if (section) {
+          const rect = section.getBoundingClientRect()
+          if (rect.top <= window.innerHeight / 2) {
+            current = section.id
+          }
         }
       }
       setActiveSection(current)
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [navItems])
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#080b10]/95 backdrop-blur-lg">

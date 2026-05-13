@@ -41,9 +41,9 @@ const Contact = () => {
         <div className="flex justify-center gap-4 flex-wrap">
           <a
             href="mailto:lucas.delvalle1996@gmail.com"
-            className="bg-[#00e5a0] text-black font-bold text-sm px-7 py-3.5 rounded-md tracking-wide hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,229,160,0.3)] transition-all duration-200"
+            className="bg-[#00e5a0] text-black font-bold text-sm px-8 py-3.5 rounded-lg tracking-wide hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,229,160,0.3)] transition-all duration-200"
           >
-            ✉ Escribime
+            Escribime
           </a>
 
           <a

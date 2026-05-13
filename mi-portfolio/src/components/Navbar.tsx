@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import ThemeToggle from './ThemeToggle'
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -43,8 +44,9 @@ const Navbar = () => {
           <span className="text-[#00e5a0]">.dev</span>
         </a>
 
-        {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 list-none">
+        {/* Desktop Menu & Theme Toggle */}
+        <div className="hidden md:flex gap-8 items-center">
+        <ul className="flex gap-8 list-none">
           {navItems.map((item) => (
             <li key={item.id}>
               <a
@@ -63,17 +65,22 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
+        <ThemeToggle />
+        </div>
 
-        {/* Mobile Menu Button */}
+        {/* Theme Toggle & Mobile Menu Button */}
+        <div className="md:hidden flex items-center gap-3">
+        <ThemeToggle />
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="flex flex-col gap-1.5 p-2"
           aria-label="Toggle menu"
         >
           <span className={`w-6 h-0.5 bg-white transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
           <span className={`w-6 h-0.5 bg-white transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
           <span className={`w-6 h-0.5 bg-white transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
         </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}

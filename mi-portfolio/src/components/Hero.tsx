@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center px-16 pt-24 pb-20 overflow-hidden">
+    <section className="relative min-h-screen flex items-center px-16 pt-40 pb-20 overflow-hidden">
 
       {/* Glow de fondo */}
       <div className="absolute w-150 h-150 rounded-full bg-[#00e5a0]/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />

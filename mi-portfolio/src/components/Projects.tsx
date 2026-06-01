@@ -19,12 +19,12 @@ const projects = [
   },
   {
     num: '003',
-    name: 'Sistema de Gestión Web',
-    desc: 'App fullstack con autenticación, CRUD completo y panel de administración. Backend en Node.js, frontend en React.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'JWT'],
-    demo: '#',
-    github: '#',
-    status: 'Próximamente',
+    name: 'Mini Kanban',
+    desc: 'Sistema completo de gestión de tareas tipo Kanban con equipos colaborativos. Tablero con 4 estados, prioridades, etiquetas personalizadas, comentarios en tareas e historial de cambios. Autenticación JWT.',
+    tags: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'JWT', 'Kanban'],
+    demo: 'https://github.com/Lucasdv96/Mini-Frontend-Con-Rama',
+    github: 'https://github.com/Lucasdv96/Mini-Frontend-Con-Rama',
+    status: 'Completado',
   },
 ]
 

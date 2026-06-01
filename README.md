@@ -1,6 +1,6 @@
 # LucasDelValle.dev — Portfolio Personal
 
-Portfolio web personal de **Lucas Del Valle**, desarrollador Full Stack Jr. especializado en React, Node.js, SQL y Kotlin.
+Portfolio web personal de **Lucas Del Valle**, desarrollador Full Stack Jr. Desarrollado en React, Node.js, SQL y Kotlin.
 
 **Live:** [lucasdv-developer.vercel.app](https://lucasdv-developer.vercel.app)
 

@@ -1,21 +1,21 @@
 const projects = [
   {
     num: '001',
-    name: 'CreaPresupuestoPDF',
-    desc: 'App Android para crear y gestionar presupuestos de carpintería de aluminio. Genera PDFs profesionales con diagramas técnicos a escala. Integra gestión de clientes y compartir vía WhatsApp/email.',
-    tags: ['Kotlin', 'Jetpack Compose', 'Room', 'iText', 'Material Design 3'],
-    demo: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
-    github: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
-    status: 'Completado',
-  },
-  {
-    num: '002',
     name: 'OlaCheck',
     desc: 'App Android para consultar condiciones de playas en tiempo real con IA. Integra datos meteorológicos/marinos, recomendaciones personalizadas con Google Gemini, comunidad de usuarios y modo offline.',
     tags: ['Kotlin', 'Jetpack Compose', 'Firebase', 'Gemini', 'Open-Meteo', 'MVVM'],
     demo: null,
     github: 'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     status: 'En desarrollo',
+  },
+  {
+    num: '002',
+    name: 'CreaPresupuestoPDF',
+    desc: 'App Android para crear y gestionar presupuestos de carpintería de aluminio. Genera PDFs profesionales con diagramas técnicos a escala. Integra gestión de clientes y compartir vía WhatsApp/email.',
+    tags: ['Kotlin', 'Jetpack Compose', 'Room', 'iText', 'Material Design 3'],
+    demo: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
+    github: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
+    status: 'Completado',
   },
   {
     num: '003',

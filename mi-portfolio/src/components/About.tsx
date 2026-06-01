@@ -25,8 +25,16 @@ const About = () => {
         </p>
         <a
           href="/cv.pdf"
-          className="bg-[#00e5a0] text-black font-bold text-sm px-7 py-3.5 rounded-md tracking-wide hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,229,160,0.3)] transition-all duration-200 inline-block"
-        >Descargar CV</a>
+          style={{
+            backgroundColor: '#00e5a0',
+            color: '#ffffff',
+          }}
+          className="font-bold text-sm px-7 py-3.5 rounded-md tracking-wide hover:-translate-y-0.5 transition-all duration-200 inline-block"
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#00c986'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00e5a0'}
+        >
+          Descargar CV
+        </a>
       </div>
 
       {/* Stats */}

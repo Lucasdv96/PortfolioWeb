@@ -1,0 +1,22 @@
+:root {
+  /* Fondos */
+  --color-bg-primary: #002233;
+  --color-bg-secondary: #11425D;
+  --color-bg-card: rgba(17,66,93,0.4);
+
+  /* Acentos */
+  --color-accent-primary: #DDFF55;
+  --color-accent-secondary: #C0D6EA;
+
+  /* Textos */
+  --color-text-primary: #F6F2E8;
+  --color-text-secondary: #C0D6EA;
+  --color-text-muted: rgba(192,214,234,0.4);
+
+  /* Especiales */
+  --color-grape: #C5C0C9;
+
+  /* Bordes */
+  --color-border: rgba(192,214,234,0.08);
+  --color-border-hover: rgba(221,255,85,0.3);
+}

@@ -1,69 +1,308 @@
+import { useEffect, useRef } from 'react'
+
 const Hero = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const roleRef = useRef<HTMLParagraphElement>(null)
+
+  // Partículas canvas
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const PARTICLE_COUNT = 55
+    const MAX_DIST = 120
+
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5,
+    }))
+
+    let animId: number
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i]
+        p.x += p.vx
+        p.y += p.vy
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
+
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(221,255,85,0.55)'
+        ctx.fill()
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j]
+          const dx = p.x - q.x
+          const dy = p.y - q.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.14
+            ctx.beginPath()
+            ctx.moveTo(p.x, p.y)
+            ctx.lineTo(q.x, q.y)
+            ctx.strokeStyle = `rgba(192,214,234,${alpha})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      cancelAnimationFrame(animId)
+    }
+  }, [])
+
+  // Typewriter effect
+  useEffect(() => {
+    const roles = [
+      'Full Stack Dev Jr.',
+      'React · Node.js · SQL',
+      'Kotlin · Android Dev',
+      'Full Stack Dev Jr.',
+    ]
+    let ri = 0, ci = 0, deleting = false
+    let timer: ReturnType<typeof setTimeout>
+
+    const el = roleRef.current
+    if (!el) return
+
+    const tick = () => {
+      const cur = roles[ri % roles.length]
+      if (!deleting) {
+        ci++
+        el.innerHTML = cur.slice(0, ci) + '<span class="tw-cursor"></span>'
+        if (ci >= cur.length) {
+          deleting = true
+          timer = setTimeout(tick, 1800)
+          return
+        }
+        timer = setTimeout(tick, 65)
+      } else {
+        ci--
+        el.innerHTML = cur.slice(0, ci) + '<span class="tw-cursor"></span>'
+        if (ci <= 0) {
+          deleting = false
+          ri++
+          timer = setTimeout(tick, 300)
+          return
+        }
+        timer = setTimeout(tick, 38)
+      }
+    }
+
+    timer = setTimeout(tick, 900)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
-    <section className="relative min-h-screen flex items-center px-16 pt-40 pb-20 overflow-hidden">
+    <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: '#002233' }}>
 
-      {/* Glow de fondo */}
-      <div className="absolute w-150 h-150 rounded-full bg-[#00e5a0]/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none" />
-
-      {/* Grid de fondo */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}
+      {/* Canvas partículas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       />
 
-      {/* Contenido */}
-      <div className="relative z-10 max-w-3xl">
+      {/* Contenido hero */}
+      <div className="relative z-10 flex-1 px-8 md:px-16 pt-36 pb-16 grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-12 items-center max-w-6xl mx-auto w-full">
 
-        {/* Badge disponible */}
-        <div className="inline-flex items-center gap-2 bg-[#00e5a0]/10 border border-[#00e5a0]/20 text-[#00e5a0] px-4 py-2 rounded-full text-xs tracking-widest uppercase mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00e5a0] animate-pulse" />
-          Disponible para trabajar
+        {/* Columna izquierda */}
+        <div>
+          {/* Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6"
+            style={{
+              background: 'rgba(221,255,85,0.07)',
+              border: '1px solid rgba(221,255,85,0.25)',
+              color: '#DDFF55',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '9px',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full"
+              style={{ background: '#DDFF55', animation: 'badge-pulse 2s infinite' }}
+            />
+            Disponible para trabajar
+          </div>
+
+          {/* Nombre */}
+          <h1
+            className="font-extrabold leading-none mb-3"
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 'clamp(48px, 8vw, 82px)',
+              letterSpacing: '-3px',
+              color: '#F6F2E8',
+            }}
+          >
+            Lucas<br />
+            <span style={{ color: 'transparent', WebkitTextStroke: '1.5px #DDFF55' }}>
+              Del Valle
+            </span>
+          </h1>
+
+          {/* Typewriter */}
+          <p
+            ref={roleRef}
+            className="mb-4"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '12px',
+              color: '#C0D6EA',
+              opacity: 0.6,
+              letterSpacing: '0.05em',
+              minHeight: '20px',
+            }}
+          >
+            <span className="tw-cursor" />
+          </p>
+
+          {/* Descripción */}
+          <p
+            className="mb-8 leading-relaxed max-w-md"
+            style={{
+              fontSize: '13px',
+              color: '#C0D6EA',
+              opacity: 0.45,
+              lineHeight: '1.75',
+            }}
+          >
+            Desarrollador apasionado por construir aplicaciones web modernas y apps Android.
+            +3 años construyendo y aprendiendo.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex gap-4 items-center">
+            <a
+              href="#proyectos"
+              className="font-bold rounded-md transition-all duration-200 hover:-translate-y-0.5 active:scale-95 inline-block"
+              style={{
+                fontFamily: "'Syne', sans-serif",
+                fontWeight: 700,
+                fontSize: '12px',
+                background: '#DDFF55',
+                color: '#002233',
+                padding: '10px 22px',
+                letterSpacing: '0.04em',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#cef030')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#DDFF55')}
+            >
+              Ver Proyectos
+            </a>
+
+            <a
+              href="#contacto"
+              className="transition-colors duration-200"
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '11px',
+                color: 'rgba(192,214,234,0.4)',
+                textDecoration: 'none',
+                letterSpacing: '0.08em',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#C0D6EA')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(192,214,234,0.4)')}
+            >
+              Contáctame →
+            </a>
+          </div>
         </div>
 
-        {/* Nombre */}
-        <h1 className="font-extrabold leading-none tracking-tighter mb-4" style={{ fontSize: 'clamp(48px, 8vw, 88px)' }}>
-          Lucas<br />
-          <span className="text-transparent" style={{ WebkitTextStroke: '1px #00e5a0' }}>
-            Del Valle
-          </span>
-        </h1>
+        {/* Columna derecha — Code snippet */}
+        <div
+          className="hidden lg:block rounded-xl p-4"
+          style={{
+            background: 'rgba(0,34,51,0.7)',
+            border: '1px solid rgba(192,214,234,0.1)',
+            backdropFilter: 'blur(12px)',
+          }}
+        >
+          <div className="flex gap-1.5 mb-3 items-center">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#ff5f57' }} />
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#ffbd2e' }} />
+            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#28ca41' }} />
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', color: 'rgba(192,214,234,0.25)', marginLeft: '6px' }}>
+              dev.ts
+            </span>
+          </div>
+          <pre style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', lineHeight: '1.75', color: 'rgba(192,214,234,0.45)' }}>
+            <span style={{ color: '#C5C0C9' }}>const </span>
+            <span style={{ color: '#C0D6EA' }}>dev</span>
+            <span> = {'{'}</span>{'\n'}
+            {'  '}<span style={{ color: '#DDFF55' }}>name</span>
+            <span>: </span>
+            <span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Lucas"</span>,{'\n'}
+            {'  '}<span style={{ color: '#DDFF55' }}>role</span>
+            <span>: </span>
+            <span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Full Stack"</span>,{'\n'}
+            {'  '}<span style={{ color: '#DDFF55' }}>stack</span>
+            <span>: [</span>{'\n'}
+            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"React"</span>,{'\n'}
+            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Kotlin"</span>,{'\n'}
+            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Node.js"</span>{'\n'}
+            {'  '}],{'\n'}
+            {'  '}<span style={{ color: '#DDFF55' }}>open</span>
+            <span>: </span>
+            <span style={{ color: '#C0D6EA' }}>true</span> ✓{'\n'}
+            {'}'}
+          </pre>
+        </div>
+      </div>
 
-        {/* Rol */}
-        <p className="text-white/40 font-semibold mb-7" style={{ fontSize: 'clamp(16px, 2.5vw, 22px)' }}>
-          Full Stack Developer Jr. &mdash; React · Node.js · SQL · Kotlin
+      {/* Scroll hint */}
+      <div
+        className="absolute bottom-6 left-8 md:left-16 flex items-center gap-2 z-10"
+        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+      >
+        <div className="scroll-line" />
+        <span style={{ fontSize: '8px', color: 'rgba(192,214,234,0.18)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+          Scroll
+        </span>
+      </div>
+
+      {/* Stats bar */}
+      <div
+        className="relative z-10 flex justify-between items-center px-8 md:px-16 py-3"
+        style={{ borderTop: '1px solid rgba(192,214,234,0.06)', background: 'rgba(0,34,51,0.88)' }}
+      >
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', color: 'rgba(192,214,234,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          // portfolio v2.0 — 2026
         </p>
-
-        {/* Descripción */}
-        <p className="text-white/40 text-sm leading-relaxed max-w-lg mb-12">
-          Desarrollador apasionado por construir aplicaciones web modernas, 
-          aplicaciones android y algoritmos. Más de 3 años de experiencia aprendiendo y construyendo.
-        </p>
-
-        {/* CTAs */}
-        <div className="flex gap-4 items-center">
-          <a
-            href="#proyectos"
-            style={{
-              backgroundColor: '#00e5a0',
-              color: '#ffffff',
-            }}
-            className="font-bold text-sm px-7 py-3.5 rounded-md tracking-wide hover:-translate-y-0.5 transition-all duration-200 inline-block"
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#00c986'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00e5a0'}
-          >
-            Ver Proyectos
-          </a>
-
-          <a
-            href="#contacto"
-            className="text-white/40 text-sm font-semibold hover:text-[#00e5a0] transition-colors duration-200"
-          >
-            Contáctame
-          </a>
+        <div className="flex gap-5">
+          {[
+            { num: '3+', label: 'Proyectos' },
+            { num: '10+', label: 'Tecnologías' },
+            { num: '∞', label: 'Ganas' },
+          ].map((s, i) => (
+            <div key={i} className="flex flex-col items-end">
+              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '17px', color: '#DDFF55', lineHeight: 1 }}>{s.num}</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7.5px', color: 'rgba(192,214,234,0.25)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{s.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -97,7 +97,9 @@ const Hero = () => {
       'Full Stack Dev Jr.',
       'React · Node.js · SQL',
       'Kotlin · Android Dev',
-      'Full Stack Dev Jr.',
+      'Java Developer',
+      'Apasionado por el código',
+      'Siempre aprendiendo',
     ]
     let ri = 0, ci = 0, deleting = false
     let timer: ReturnType<typeof setTimeout>

@@ -7,33 +7,41 @@ const Contact = () => {
     <section
       ref={ref}
       id="contacto"
-      className="relative px-16 py-32 border-t border-white/10 text-center overflow-hidden"
+      className="relative px-8 md:px-16 py-32 text-center overflow-hidden"
+      style={{ background: '#002233', borderTop: '1px solid rgba(192,214,234,0.06)' }}
     >
-      {/* Glow de fondo animado */}
+      {/* Glow de fondo */}
       <div
-        className={`absolute w-[400px] h-[400px] rounded-full bg-[#0066ff]/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none transition-opacity duration-1000 ${
-          isInView ? 'opacity-100' : 'opacity-0'
-        }`}
-        style={{ animationDelay: '0.2s' }}
+        className="absolute w-[400px] h-[400px] rounded-full blur-3xl pointer-events-none"
+        style={{
+          background: 'rgba(221,255,85,0.04)',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          opacity: isInView ? 1 : 0,
+          transition: 'opacity 1s ease',
+        }}
       />
 
       <div
-        className={`relative z-10 transition-all duration-700 ${
-          isInView
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-8'
-        }`}
+        className="relative z-10 transition-all duration-700"
+        style={{
+          opacity: isInView ? 1 : 0,
+          transform: isInView ? 'translateY(0)' : 'translateY(32px)',
+        }}
       >
-        <p className="text-[#00e5a0] text-xs tracking-[0.2em] uppercase mb-3">// 04 — Contacto</p>
+        <p style={{ fontFamily: "'JetBrains Mono', monospace", color: '#DDFF55', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '12px' }}>
+          // 04 — Contacto
+        </p>
 
         <h2
-          className="font-extrabold tracking-tighter text-white mb-6"
-          style={{ fontSize: 'clamp(32px, 5vw, 60px)' }}
+          className="font-extrabold tracking-tighter mb-6"
+          style={{ fontFamily: "'Syne', sans-serif", fontSize: 'clamp(32px, 5vw, 60px)', color: '#F6F2E8' }}
         >
           ¿Trabajamos<br />juntos?
         </h2>
 
-        <p className="text-white/40 text-sm leading-relaxed max-w-sm mx-auto mb-10">
+        <p style={{ fontSize: '13px', color: 'rgba(192,214,234,0.6)', lineHeight: '1.7', maxWidth: '500px', margin: '0 auto 32px' }}>
           Estoy abierto a oportunidades laborales, proyectos freelance
           o simplemente charlar sobre tecnología.
         </p>
@@ -42,12 +50,26 @@ const Contact = () => {
           <a
             href="mailto:lucas.delvalle1996@gmail.com"
             style={{
-              backgroundColor: '#00e5a0',
-              color: '#ffffff',
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 700,
+              fontSize: '12px',
+              background: '#DDFF55',
+              color: '#002233',
+              padding: '10px 22px',
+              borderRadius: '6px',
+              letterSpacing: '0.04em',
+              display: 'inline-block',
+              textDecoration: 'none',
+              transition: 'all 0.2s',
             }}
-            className="font-bold text-sm px-9 py-3.5 rounded-lg tracking-wide hover:-translate-y-1 transition-all duration-200 active:scale-95 inline-block"
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#00c986'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00e5a0'}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = '#cef030'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = '#DDFF55'
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
           >
             Escribime
           </a>
@@ -56,7 +78,26 @@ const Contact = () => {
             href="https://www.linkedin.com/in/lucas-del-valle-740277163/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white text-sm px-7 py-3.5 border border-white/10 rounded-md tracking-wide hover:border-[#00e5a0]/50 hover:text-[#00e5a0] transition-all duration-200"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '11px',
+              color: 'rgba(192,214,234,0.4)',
+              padding: '10px 22px',
+              border: '1px solid rgba(192,214,234,0.15)',
+              borderRadius: '6px',
+              letterSpacing: '0.04em',
+              textDecoration: 'none',
+              display: 'inline-block',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = '#DDFF55'
+              e.currentTarget.style.borderColor = 'rgba(221,255,85,0.3)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'rgba(192,214,234,0.4)'
+              e.currentTarget.style.borderColor = 'rgba(192,214,234,0.15)'
+            }}
           >
             LinkedIn
           </a>
@@ -65,7 +106,26 @@ const Contact = () => {
             href="https://github.com/Lucasdv96"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white text-sm px-7 py-3.5 border border-white/10 rounded-md tracking-wide hover:border-[#00e5a0]/50 hover:text-[#00e5a0] transition-all duration-200"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '11px',
+              color: 'rgba(192,214,234,0.4)',
+              padding: '10px 22px',
+              border: '1px solid rgba(192,214,234,0.15)',
+              borderRadius: '6px',
+              letterSpacing: '0.04em',
+              textDecoration: 'none',
+              display: 'inline-block',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = '#DDFF55'
+              e.currentTarget.style.borderColor = 'rgba(221,255,85,0.3)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'rgba(192,214,234,0.4)'
+              e.currentTarget.style.borderColor = 'rgba(192,214,234,0.15)'
+            }}
           >
             GitHub
           </a>

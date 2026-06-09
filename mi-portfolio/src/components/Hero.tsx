@@ -151,7 +151,7 @@ const Hero = () => {
       />
 
       {/* Contenido hero */}
-      <div className="relative z-10 flex-1 px-8 md:px-16 pt-36 pb-16 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12 items-center max-w-6xl ml-0 w-full">
+      <div className="relative z-10 flex-1 px-8 md:px-16 pt-36 pb-16 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12 items-center w-full">
 
         {/* Columna izquierda */}
         <div>

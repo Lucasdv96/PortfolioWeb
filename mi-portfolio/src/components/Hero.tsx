@@ -95,9 +95,12 @@ const Hero = () => {
   useEffect(() => {
     const roles = [
       'Full Stack Dev Jr.',
+      'Software Developer.',
       'React · Node.js · SQL',
       'Kotlin · Android Dev',
-      'Full Stack Dev Jr.',
+      'Java Developer.',
+      'Apasionado por el código.',
+      'Siempre aprendiendo.',
     ]
     let ri = 0, ci = 0, deleting = false
     let timer: ReturnType<typeof setTimeout>

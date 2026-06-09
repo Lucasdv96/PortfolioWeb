@@ -1,11 +1,21 @@
 import { useInView } from '../hooks/useInView'
 
-const skills = [
+type Skill = { icon?: string; icons?: string[]; name: string; level: string }
+
+const skills: Skill[] = [
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', name: 'React', level: 'Frontend' },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', name: 'Node.js', level: 'Backend' },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', name: 'SQL', level: 'Base de datos' },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', name: 'Java', level: 'Backend' },
-  { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', name: 'HTML / CSS / JS', level: 'Frontend' },
+  {
+    icons: [
+      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+    ],
+    name: 'HTML / CSS / JS',
+    level: 'Frontend',
+  },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', name: 'Git & GitHub', level: 'Versiones' },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg', name: 'Kotlin', level: 'Android' },
   { icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', name: 'TypeScript', level: 'Frontend' },
@@ -52,11 +62,15 @@ const Skills = () => {
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(17,66,93,0.5)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'rgba(17,66,93,0.2)')}
           >
-            <img
-              src={skill.icon}
-              alt={skill.name}
-              className="w-8 h-8 mb-4 opacity-80 group-hover:opacity-100 transition-opacity"
-            />
+            {skill.icons ? (
+              <div className="flex gap-1.5 mb-4">
+                {skill.icons.map((src, j) => (
+                  <img key={j} src={src} alt="" className="w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity" />
+                ))}
+              </div>
+            ) : (
+              <img src={skill.icon} alt={skill.name} className="w-8 h-8 mb-4 opacity-80 group-hover:opacity-100 transition-opacity" />
+            )}
             <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: '13px', color: '#F6F2E8', marginBottom: '4px' }}>
               {skill.name}
             </div>

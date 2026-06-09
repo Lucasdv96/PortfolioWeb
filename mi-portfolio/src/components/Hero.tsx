@@ -1,8 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+const CAROUSEL_SLIDES = [
+  {
+    filename: 'dev.ts',
+    accent: '#DDFF55',
+    code: `const dev = {\n  name: "Lucas",\n  role: "Full Stack",\n  stack: [\n    "React",\n    "Kotlin",\n    "Node.js"\n  ],\n  open: true ✓\n}`,
+  },
+  {
+    filename: 'App.tsx',
+    accent: '#C0D6EA',
+    code: `const App = () => {\n  return (\n    <Router>\n      <Navbar />\n      <Hero />\n      <Skills />\n      <Projects />\n      <Contact />\n    </Router>\n  )\n}`,
+  },
+  {
+    filename: 'OlaCheck.kt',
+    accent: '#C5C0C9',
+    code: `class MainActivity :\n  AppCompatActivity() {\n\n  override fun onCreate(\n    bundle: Bundle?\n  ) {\n    setContent {\n      OlaCheckTheme {\n        NavGraph()\n      }\n    }\n  }\n}`,
+  },
+]
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const roleRef = useRef<HTMLParagraphElement>(null)
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
   // Partículas canvas
   useEffect(() => {
@@ -114,6 +133,14 @@ const Hero = () => {
     return () => clearTimeout(timer)
   }, [])
 
+  // Auto-avance carrusel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex(prev => (prev + 1) % CAROUSEL_SLIDES.length)
+    }, 3500)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: '#002233' }}>
 
@@ -124,7 +151,7 @@ const Hero = () => {
       />
 
       {/* Contenido hero */}
-      <div className="relative z-10 flex-1 px-8 md:px-16 pt-36 pb-16 grid grid-cols-1 lg:grid-cols-[1fr_220px] gap-12 items-center max-w-6xl mx-auto w-full">
+      <div className="relative z-10 flex-1 px-8 md:px-16 pt-36 pb-16 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12 items-center max-w-6xl ml-0 w-full">
 
         {/* Columna izquierda */}
         <div>
@@ -232,44 +259,96 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Columna derecha — Code snippet */}
-        <div
-          className="hidden lg:block rounded-xl p-4"
-          style={{
-            background: 'rgba(0,34,51,0.7)',
-            border: '1px solid rgba(192,214,234,0.1)',
-            backdropFilter: 'blur(12px)',
-          }}
-        >
-          <div className="flex gap-1.5 mb-3 items-center">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#ff5f57' }} />
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#ffbd2e' }} />
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#28ca41' }} />
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', color: 'rgba(192,214,234,0.25)', marginLeft: '6px' }}>
-              dev.ts
-            </span>
+        {/* Columna derecha — Carrusel 3D */}
+        <div className="hidden lg:flex flex-col items-center justify-center gap-4">
+          {/* Viewport del carrusel */}
+          <div style={{ position: 'relative', width: '340px', height: '230px' }}>
+            {CAROUSEL_SLIDES.map((slide, i) => {
+              const total = CAROUSEL_SLIDES.length
+              const raw = ((i - carouselIndex) % total + total) % total
+              const offset = raw > Math.floor(total / 2) ? raw - total : raw
+              const isActive = offset === 0
+              const rotateY = offset * 45
+              const translateX = offset * 75
+              const scale = isActive ? 1 : 0.78
+              const opacity = Math.abs(offset) > 1 ? 0 : (isActive ? 1 : 0.55)
+              const zIndex = isActive ? 10 : 5 - Math.abs(offset)
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => !isActive && setCarouselIndex(i)}
+                  style={{
+                    position: 'absolute',
+                    width: '220px',
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(-50%, -50%) perspective(600px) rotateY(${rotateY}deg) translateX(${translateX}px) scale(${scale})`,
+                    transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+                    opacity,
+                    zIndex,
+                    cursor: isActive ? 'default' : 'pointer',
+                    background: 'rgba(0,34,51,0.85)',
+                    border: `1px solid ${isActive ? `${slide.accent}44` : 'rgba(192,214,234,0.08)'}`,
+                    borderRadius: '12px',
+                    padding: '14px',
+                    backdropFilter: 'blur(12px)',
+                    boxSizing: 'border-box',
+                    boxShadow: isActive ? `0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px ${slide.accent}22` : 'none',
+                  }}
+                >
+                  {/* Barra superior terminal */}
+                  <div style={{ display: 'flex', gap: '5px', marginBottom: '10px', alignItems: 'center' }}>
+                    <div style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#ff5f57' }} />
+                    <div style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#ffbd2e' }} />
+                    <div style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#28ca41' }} />
+                    <span style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: '8px',
+                      color: slide.accent,
+                      opacity: 0.5,
+                      marginLeft: '6px',
+                      letterSpacing: '0.05em',
+                    }}>
+                      {slide.filename}
+                    </span>
+                  </div>
+                  {/* Código */}
+                  <pre style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '9px',
+                    lineHeight: '1.75',
+                    color: 'rgba(192,214,234,0.6)',
+                    margin: 0,
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                  }}>
+                    {slide.code}
+                  </pre>
+                </div>
+              )
+            })}
           </div>
-          <pre style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', lineHeight: '1.75', color: 'rgba(192,214,234,0.45)' }}>
-            <span style={{ color: '#C5C0C9' }}>const </span>
-            <span style={{ color: '#C0D6EA' }}>dev</span>
-            <span> = {'{'}</span>{'\n'}
-            {'  '}<span style={{ color: '#DDFF55' }}>name</span>
-            <span>: </span>
-            <span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Lucas"</span>,{'\n'}
-            {'  '}<span style={{ color: '#DDFF55' }}>role</span>
-            <span>: </span>
-            <span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Full Stack"</span>,{'\n'}
-            {'  '}<span style={{ color: '#DDFF55' }}>stack</span>
-            <span>: [</span>{'\n'}
-            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"React"</span>,{'\n'}
-            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Kotlin"</span>,{'\n'}
-            {'    '}<span style={{ color: '#F6F2E8', opacity: 0.7 }}>"Node.js"</span>{'\n'}
-            {'  '}],{'\n'}
-            {'  '}<span style={{ color: '#DDFF55' }}>open</span>
-            <span>: </span>
-            <span style={{ color: '#C0D6EA' }}>true</span> ✓{'\n'}
-            {'}'}
-          </pre>
+
+          {/* Dots de navegación */}
+          <div style={{ display: 'flex', gap: '7px', alignItems: 'center' }}>
+            {CAROUSEL_SLIDES.map((slide, i) => (
+              <button
+                key={i}
+                onClick={() => setCarouselIndex(i)}
+                style={{
+                  width: i === carouselIndex ? '18px' : '6px',
+                  height: '6px',
+                  borderRadius: '3px',
+                  background: i === carouselIndex ? slide.accent : 'rgba(192,214,234,0.15)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.35s ease',
+                  padding: 0,
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

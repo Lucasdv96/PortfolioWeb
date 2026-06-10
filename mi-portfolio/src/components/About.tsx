@@ -44,6 +44,9 @@ const About = () => {
         </p>
         <a
           href="/cv.pdf"
+          download="Lucas_Del_Valle_CV.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             fontFamily: "'Syne', sans-serif",
             fontWeight: 700,

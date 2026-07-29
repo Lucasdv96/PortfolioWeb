@@ -220,8 +220,7 @@ const Hero = () => {
               lineHeight: '1.75',
             }}
           >
-            Desarrollador apasionado por construir aplicaciones web modernas y apps Android.
-            +3 años construyendo y aprendiendo.
+            Estudiante avanzado de la Lic. en Gestión de la Tecnología de la Información (UADE), buscando mi primera oportunidad como desarrollador Jr. 6 años de experiencia en ventas de campo + app vendida a nivel local creada en kotlin para android,proyectos en Node.js y React.
           </p>
 
           {/* CTAs */}

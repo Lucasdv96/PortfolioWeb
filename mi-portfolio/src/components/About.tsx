@@ -35,8 +35,7 @@ const About = () => {
           Un poco de contexto
         </h2>
         <p style={{ fontSize: '14px', color: 'rgba(192,214,234,0.7)', lineHeight: '1.8', marginBottom: '16px' }}>
-          Soy estudiante de programación con más de 2 años de experiencia construyendo
-          proyectos con tecnologías modernas. Me especializo en el desarrollo web fullstack.
+          Estudiante avanzado de la Lic. en Gestión de la Tecnología de la Información (UADE), buscando mi primera oportunidad como desarrollador Jr. 6 años de experiencia en ventas de campo + proyectos propios en Android, Node.js y React.
         </p>
         <p style={{ fontSize: '14px', color: 'rgba(192,214,234,0.7)', lineHeight: '1.8', marginBottom: '24px' }}>
           Busco mi primera oportunidad profesional donde pueda aportar valor real

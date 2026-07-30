@@ -98,8 +98,6 @@ const Hero = () => {
       'Software Developer.',
       'React · Node.js · SQL',
       'Kotlin · Android Dev',
-      'Java Developer.',
-      'Apasionado por el código.',
       'Siempre aprendiendo.',
     ]
     let ri = 0, ci = 0, deleting = false
@@ -220,7 +218,7 @@ const Hero = () => {
               lineHeight: '1.75',
             }}
           >
-            Estudiante avanzado de la Lic. en Gestión de la Tecnología de la Información (UADE), buscando mi primera oportunidad como desarrollador Jr. 6 años de experiencia en ventas de campo + app vendida a nivel local creada en kotlin para android,proyectos en Node.js y React.
+            Estudiante avanzado de la Lic. en Gestión de la Tecnología de la Información (UADE), buscando mi primera oportunidad como desarrollador Jr. 6 años de experiencia en ventas de campo + app vendida a nivel local creada en kotlin para android,proyectos en  Node.js y React.
           </p>
 
           {/* CTAs */}

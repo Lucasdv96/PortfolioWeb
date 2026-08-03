@@ -11,6 +11,8 @@ const projects = [
       '/OlaCheck/olacheck_1.png',
       '/OlaCheck/olacheck_2.png',
       '/OlaCheck/olacheck_3.png',
+      '/OlaCheck/olacheck_4.png',
+      '/OlaCheck/olacheck_5.png',
     ],
     github: 'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     status: 'Completado',
@@ -117,6 +119,7 @@ const Projects = () => {
             {(project.images?.length ?? 0) > 0 ? (
               <div className="w-full aspect-video overflow-hidden" style={{ background: 'rgba(0,34,51,0.5)', position: 'relative' }}>
                 <img
+                  key={currentImageIndex[i] || 0}
                   src={project.images?.[currentImageIndex[i] || 0]}
                   alt={`Demo de ${project.name}`}
                   className="w-full h-full object-contain project-image-fade"

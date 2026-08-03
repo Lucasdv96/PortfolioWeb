@@ -10,8 +10,8 @@ function App() {
     <div className="bg-[#080b10] min-h-screen text-white">
       <Navbar />
       <Hero />
-      <Skills />
       <Projects />
+      <Skills />
       <About />
       <Contact />
     </div>

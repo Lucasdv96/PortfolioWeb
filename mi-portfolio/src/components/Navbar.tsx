@@ -5,8 +5,8 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('')
 
   const navItems = [
-    { label: 'Skills', id: 'skills' },
     { label: 'Proyectos', id: 'proyectos' },
+    { label: 'Skills', id: 'skills' },
     { label: 'Sobre mi', id: 'sobre-mi' },
     { label: 'Contacto', id: 'contacto' },
   ]

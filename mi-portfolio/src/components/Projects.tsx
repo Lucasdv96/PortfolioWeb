@@ -21,7 +21,7 @@ const projects = [
     name: 'CreaPresupuestoPDF',
     desc: 'App Android para crear y gestionar presupuestos de carpintería de aluminio y Herreria. Genera PDFs profesionales con diagramas técnicos a escala. Integra gestión de clientes y compartir vía WhatsApp/email.',
     tags: ['Kotlin', 'Jetpack Compose', 'Room', 'iText', 'Material Design 3'],
-    images: null,
+    images: [],
     mediaType: 'video',
     demo: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
     github: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
@@ -32,7 +32,7 @@ const projects = [
     name: 'Mini Kanban',
     desc: 'Sistema completo de gestión de tareas tipo Kanban con equipos colaborativos. Tablero con 4 estados, prioridades, etiquetas personalizadas, comentarios en tareas e historial de cambios. Autenticación JWT.',
     tags: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'JWT', 'Kanban'],
-    media: null,
+    images: [],
     mediaType: 'video',
     demo: 'https://github.com/Lucasdv96/Mini-Frontend-Con-Rama',
     github: 'https://github.com/Lucasdv96/Mini-Frontend-Con-Rama',
@@ -50,6 +50,7 @@ const Projects = () => {
       const newIndex = (currentIndex + direction + totalImages) % totalImages
       return { ...prev, [projectIndex]: newIndex }
     })
+  }
 
 
   return (
@@ -215,7 +216,6 @@ const Projects = () => {
     </section>
     
   )
-}
 }
 
 export default Projects

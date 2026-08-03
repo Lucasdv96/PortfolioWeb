@@ -2,20 +2,29 @@ import { useEffect, useRef, useState } from 'react'
 
 const CAROUSEL_SLIDES = [
   {
+    type: 'code',
     filename: 'dev.ts',
     accent: '#DDFF55',
     code: `const dev = {\n  name: "Lucas",\n  role: "Full Stack",\n  stack: [\n    "React",\n    "Kotlin",\n    "Node.js"\n  ],\n  open: true ✓\n}`,
   },
   {
+    type: 'code',
     filename: 'App.tsx',
     accent: '#C0D6EA',
     code: `const App = () => {\n  return (\n    <Router>\n      <Navbar />\n      <Hero />\n      <Skills />\n      <Projects />\n      <Contact />\n    </Router>\n  )\n}`,
   },
   {
+    type: 'code',
     filename: 'OlaCheck.kt',
     accent: '#C5C0C9',
     code: `class MainActivity :\n  AppCompatActivity() {\n\n  override fun onCreate(\n    bundle: Bundle?\n  ) {\n    setContent {\n      OlaCheckTheme {\n        NavGraph()\n      }\n    }\n  }\n}`,
   },
+  {
+    type: 'image',
+    filename: 'foto-perfil.jpg',
+    accent: '#DDFF55',
+    image: 'C:\\Users\\soi-l\\OneDrive\\Escritorio\\misproyectos\\FinalWeb\\PortfolioWeb\\mi-portfolio\\public\\carousel\\foto-perfil.jpg',
+  }
 ]
 
 const Hero = () => {
@@ -220,6 +229,7 @@ const Hero = () => {
           >
             Estudiante avanzado de la Lic. en Gestión de la Tecnología de la Información (UADE), buscando mi primera oportunidad como desarrollador Jr. 6 años de experiencia en ventas de campo + app vendida a nivel local creada en kotlin para android,proyectos en  Node.js y React.
           </p>
+          
 
           {/* CTAs */}
           <div className="flex gap-4 items-center">
@@ -274,6 +284,7 @@ const Hero = () => {
               const opacity = Math.abs(offset) > 1 ? 0 : (isActive ? 1 : 0.55)
               const zIndex = isActive ? 10 : 5 - Math.abs(offset)
 
+
               return (
                 <div
                   key={i}
@@ -314,6 +325,13 @@ const Hero = () => {
                     </span>
                   </div>
                   {/* Código */}
+                  {slide.type === 'image' ? (
+                  <img
+                    src={slide.image}
+                    alt={slide.filename}
+                    style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '6px' }}
+                  />
+                  ) : (
                   <pre style={{
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: '9px',
@@ -325,7 +343,8 @@ const Hero = () => {
                   }}>
                     {slide.code}
                   </pre>
-                </div>
+                  )}
+                  </div>
               )
             })}
           </div>
@@ -350,41 +369,8 @@ const Hero = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div
-        className="absolute bottom-6 left-8 md:left-16 flex items-center gap-2 z-10"
-        style={{ fontFamily: "'JetBrains Mono', monospace" }}
-      >
-        <div className="scroll-line" />
-        <span style={{ fontSize: '8px', color: 'rgba(192,214,234,0.18)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-          Scroll
-        </span>
-      </div>
-
-      {/* Stats bar */}
-      <div
-        className="relative z-10 flex justify-between items-center px-8 md:px-16 py-3"
-        style={{ borderTop: '1px solid rgba(192,214,234,0.06)', background: 'rgba(0,34,51,0.88)' }}
-      >
-        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', color: 'rgba(192,214,234,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-          // portfolio v2.0 — 2026
-        </p>
-        <div className="flex gap-5">
-          {[
-            { num: '3+', label: 'Proyectos' },
-            { num: '10+', label: 'Tecnologías' },
-            { num: '∞', label: 'Ganas' },
-          ].map((s, i) => (
-            <div key={i} className="flex flex-col items-end">
-              <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '17px', color: '#DDFF55', lineHeight: 1 }}>{s.num}</span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '7.5px', color: 'rgba(192,214,234,0.25)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+      </div>   
+   </section>
   )
 }
 

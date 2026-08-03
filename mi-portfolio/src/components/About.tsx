@@ -58,6 +58,7 @@ const About = () => {
             display: 'inline-block',
             textDecoration: 'none',
             transition: 'all 0.2s',
+            marginRight: '12px',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.background = '#cef030'
@@ -69,6 +70,36 @@ const About = () => {
           }}
         >
           Descargar CV
+        </a>
+        <a
+          href="/CV_LucasDelValle_EN.pdf"
+          download="CV_LucasDelValle_EN.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: "'Syne', sans-serif",
+            fontWeight: 700,
+            fontSize: '12px',
+            background: '#DDFF55',
+            color: '#002233',
+            padding: '10px 22px',
+            borderRadius: '6px',
+            letterSpacing: '0.04em',
+            display: 'inline-block',
+            textDecoration: 'none',
+            transition: 'all 0.2s',
+           
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = '#cef030'
+            e.currentTarget.style.transform = 'translateY(-2px)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = '#DDFF55'
+            e.currentTarget.style.transform = 'translateY(0)'
+          }}
+        >
+          Download CV in english
         </a>
       </div>
 

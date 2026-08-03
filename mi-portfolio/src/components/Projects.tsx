@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useInView } from '../hooks/useInView'
 
 const projects = [
@@ -8,11 +8,10 @@ const projects = [
     desc: 'App Android para consultar condiciones de playas en tiempo real con IA. Integra datos meteorológicos/marinos, recomendaciones personalizadas con Google Gemini, comunidad de usuarios y modo offline.',
     tags: ['Kotlin', 'Jetpack Compose', 'Firebase', 'Gemini', 'Open-Meteo', 'MVVM'],
     images:[
-      '/olaCheck/olaCheck1.png',
-      '/olaCheck/olaCheck2.png',
-      '/olaCheck/olaCheck3.png',
+      '/OlaCheck/olacheck_1.png',
+      '/OlaCheck/olacheck_2.png',
+      '/OlaCheck/olacheck_3.png',
     ],
-    demo: null,
     github: 'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     status: 'Completado',
   },
@@ -21,7 +20,13 @@ const projects = [
     name: 'CreaPresupuestoPDF',
     desc: 'App Android para crear y gestionar presupuestos de carpintería de aluminio y Herreria. Genera PDFs profesionales con diagramas técnicos a escala. Integra gestión de clientes y compartir vía WhatsApp/email.',
     tags: ['Kotlin', 'Jetpack Compose', 'Room', 'iText', 'Material Design 3'],
-    images: [],
+    images: [
+      '/CreaPresupuesto/CreaPresupuesto_1.png',
+      '/CreaPresupuesto/CreaPresupuesto_2.png',
+      '/CreaPresupuesto/CreaPresupuesto_4.png',
+      '/CreaPresupuesto/CreaPresupuesto_7.png',
+      '/CreaPresupuesto/CreaPresupuesto_9.png',
+    ],
     mediaType: 'video',
     demo: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
     github: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
@@ -51,6 +56,23 @@ const Projects = () => {
       return { ...prev, [projectIndex]: newIndex }
     })
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(prev => {
+        const nuevo = { ...prev }
+        projects.forEach((project, index) => {
+          const total = project.images?.length ?? 0
+          if (total > 1) {
+            const currentIndex = prev[index] || 0
+            nuevo[index] = (currentIndex + 1) % total
+          }
+        })
+        return nuevo
+      })
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
 
   return (
@@ -93,12 +115,63 @@ const Projects = () => {
           >
             {/* Media slot */}
             {(project.images?.length ?? 0) > 0 ? (
-              <div className="w-full aspect-video overflow-hidden" style={{ background: 'rgba(0,34,51,0.5)' }}>
+              <div className="w-full aspect-video overflow-hidden" style={{ background: 'rgba(0,34,51,0.5)', position: 'relative' }}>
                 <img
                   src={project.images?.[currentImageIndex[i] || 0]}
                   alt={`Demo de ${project.name}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain project-image-fade"
                 />
+
+                {/* Navigation buttons */}
+                {(project.images?.length ?? 0) > 1 && (
+                  <>
+                    <button
+                      onClick={() => handlePrevImage(i, -1, project.images!.length)}
+                      style={{
+                        position: 'absolute',
+                        left: '8px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        border: 'none',
+                        background: 'rgba(0,34,51,0.7)',
+                        color: '#DDFF55',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      ‹
+                    </button>
+
+                    <button
+                      onClick={() => handlePrevImage(i, 1, project.images!.length)}
+                      style={{
+                        position: 'absolute',
+                        right: '8px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        border: 'none',
+                        background: 'rgba(0,34,51,0.7)',
+                        color: '#DDFF55',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
               </div>
             ) : (
                <div

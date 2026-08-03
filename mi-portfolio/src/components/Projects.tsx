@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useInView } from '../hooks/useInView'
 
 const projects = [
@@ -6,8 +7,11 @@ const projects = [
     name: 'OlaCheck',
     desc: 'App Android para consultar condiciones de playas en tiempo real con IA. Integra datos meteorológicos/marinos, recomendaciones personalizadas con Google Gemini, comunidad de usuarios y modo offline.',
     tags: ['Kotlin', 'Jetpack Compose', 'Firebase', 'Gemini', 'Open-Meteo', 'MVVM'],
-    media: null,
-    mediaType: 'video',
+    images:[
+      '/olaCheck/olaCheck1.png',
+      '/olaCheck/olaCheck2.png',
+      '/olaCheck/olaCheck3.png',
+    ],
     demo: null,
     github: 'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     status: 'Completado',
@@ -17,7 +21,7 @@ const projects = [
     name: 'CreaPresupuestoPDF',
     desc: 'App Android para crear y gestionar presupuestos de carpintería de aluminio y Herreria. Genera PDFs profesionales con diagramas técnicos a escala. Integra gestión de clientes y compartir vía WhatsApp/email.',
     tags: ['Kotlin', 'Jetpack Compose', 'Room', 'iText', 'Material Design 3'],
-    media: null,
+    images: null,
     mediaType: 'video',
     demo: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
     github: 'https://github.com/Lucasdv96/CreaPresupuestoPDF',
@@ -38,6 +42,15 @@ const projects = [
 
 const Projects = () => {
   const { ref, isInView } = useInView()
+  const [currentImageIndex, setCurrentImageIndex] = useState<{ [key: number]: number }>({})
+
+  const handlePrevImage = (projectIndex: number, direction: 1 | -1, totalImages: number) => {
+    setCurrentImageIndex(prev => {
+      const currentIndex = prev[projectIndex] || 0
+      const newIndex = (currentIndex + direction + totalImages) % totalImages
+      return { ...prev, [projectIndex]: newIndex }
+    })
+
 
   return (
     <section
@@ -78,24 +91,24 @@ const Projects = () => {
             }}
           >
             {/* Media slot */}
-            {project.media ? (
+            {(project.images?.length ?? 0) > 0 ? (
               <div className="w-full aspect-video overflow-hidden" style={{ background: 'rgba(0,34,51,0.5)' }}>
-                {project.mediaType === 'video' ? (
-                  <video src={project.media} autoPlay muted loop playsInline className="w-full h-full object-cover" />
-                ) : (
-                  <img src={project.media} alt={`Demo de ${project.name}`} className="w-full h-full object-cover" />
-                )}
+                <img
+                  src={project.images?.[currentImageIndex[i] || 0]}
+                  alt={`Demo de ${project.name}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ) : (
-              <div
-                className="w-full aspect-video flex items-center justify-center"
-                style={{ background: 'rgba(17,66,93,0.3)', borderBottom: '1px solid rgba(192,214,234,0.08)' }}
-              >
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: 'rgba(192,214,234,0.3)', letterSpacing: '0.1em' }}>
-                  DEMO PRÓXIMAMENTE
-                </span>
-              </div>
-            )}
+               <div
+              className="w-full aspect-video flex items-center justify-center"
+              style={{ background: 'rgba(17,66,93,0.3)', borderBottom: '1px solid rgba(192,214,234,0.08)' }}
+            >
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: 'rgba(192,214,234,0.3)', letterSpacing: '0.1em' }}>
+                DEMO PRÓXIMAMENTE
+              </span>
+            </div>
+          )}
 
             {/* Content */}
             <div className="p-6">
@@ -200,7 +213,9 @@ const Projects = () => {
         ))}
       </div>
     </section>
+    
   )
+}
 }
 
 export default Projects

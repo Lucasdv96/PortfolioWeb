@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 
 const CAROUSEL_SLIDES = [
   {
+    type: 'image',
+    filename: 'mi_perfil.jpg',
+    accent: '#DDFF55',
+    image: '/carousel/foto-perfil.jpg',
+  },
+  {
     type: 'code',
     filename: 'dev.ts',
     accent: '#DDFF55',
@@ -19,12 +25,6 @@ const CAROUSEL_SLIDES = [
     accent: '#C5C0C9',
     code: `class MainActivity :\n  AppCompatActivity() {\n\n  override fun onCreate(\n    bundle: Bundle?\n  ) {\n    setContent {\n      OlaCheckTheme {\n        NavGraph()\n      }\n    }\n  }\n}`,
   },
-  {
-    type: 'image',
-    filename: 'foto-perfil.jpg',
-    accent: '#DDFF55',
-    image: 'C:\\Users\\soi-l\\OneDrive\\Escritorio\\misproyectos\\FinalWeb\\PortfolioWeb\\mi-portfolio\\public\\carousel\\foto-perfil.jpg',
-  }
 ]
 
 const Hero = () => {

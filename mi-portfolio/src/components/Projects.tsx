@@ -14,6 +14,7 @@ const projects = [
       '/OlaCheck/olacheck_4.png',
       '/OlaCheck/olacheck_5.png',
     ],
+    demo:'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     github: 'https://github.com/Lucasdv96/Aplicacion_OlaCheck',
     status: 'Completado',
   },

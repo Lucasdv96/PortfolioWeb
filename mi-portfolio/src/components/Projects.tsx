@@ -69,6 +69,7 @@ const projects: Project[] = [
 ]
 
 const PROJECT_GAP = 24
+const AUTO_ADVANCE_MS = 5000
 
 const Projects = () => {
   const { ref, isInView } = useInView()
@@ -77,7 +78,22 @@ const Projects = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(900)
 
-  // Auto-avance imágenes por card
+  // Refs para gestos — no necesitan re-render
+  const isHoveredRef = useRef(false)
+  const lastWheelRef = useRef(0)
+  const dragStartRef = useRef<number | null>(null)
+
+  // Auto-avance de proyectos (pausa al hover)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isHoveredRef.current) {
+        setActiveIndex(i => (i + 1) % projects.length)
+      }
+    }, AUTO_ADVANCE_MS)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Auto-avance imágenes dentro de cada card
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prev => {
@@ -92,7 +108,7 @@ const Projects = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Medición del contenedor para el carrusel
+  // Medición del contenedor
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -102,7 +118,7 @@ const Projects = () => {
     return () => obs.disconnect()
   }, [])
 
-  // Teclado ← → para navegar entre proyectos
+  // Teclado ← →
   useEffect(() => {
     const handle = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') setActiveIndex(i => (i - 1 + projects.length) % projects.length)
@@ -111,6 +127,32 @@ const Projects = () => {
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
   }, [])
+
+  const navigate = (dir: 1 | -1) => {
+    setActiveIndex(i => (i + dir + projects.length) % projects.length)
+  }
+
+  // Trackpad horizontal swipe
+  const handleWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2 && Math.abs(e.deltaX) > 25) {
+      const now = Date.now()
+      if (now - lastWheelRef.current > 700) {
+        lastWheelRef.current = now
+        navigate(e.deltaX > 0 ? 1 : -1)
+      }
+    }
+  }
+
+  // Drag / swipe con mouse o touch
+  const handlePointerDown = (e: React.PointerEvent) => {
+    dragStartRef.current = e.clientX
+  }
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (dragStartRef.current === null) return
+    const delta = e.clientX - dragStartRef.current
+    if (Math.abs(delta) > 60) navigate(delta < 0 ? 1 : -1)
+    dragStartRef.current = null
+  }
 
   const handleImageNav = (projectIndex: number, direction: 1 | -1, total: number) => {
     setCurrentImageIndex(prev => ({
@@ -123,51 +165,59 @@ const Projects = () => {
   const peekWidth = (containerWidth - cardWidth) / 2
   const translateX = peekWidth - activeIndex * (cardWidth + PROJECT_GAP)
 
-  const renderMedia = (project: Project, i: number, desktop: boolean) => {
+  const renderMedia = (project: Project, i: number, desktop: boolean, isActive: boolean) => {
     const imgCount = project.images?.length ?? 0
     const imgIdx = currentImageIndex[i] || 0
     const wrapStyle: React.CSSProperties = desktop
-      ? { width: '44%', flexShrink: 0, height: '100%', overflow: 'hidden', position: 'relative' }
+      ? { width: '44%', flexShrink: 0, height: '100%', overflow: 'hidden', position: 'relative', background: 'rgba(0,20,34,0.6)' }
       : { aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }
 
     if (imgCount > 0) {
       return (
-        <div style={{ ...wrapStyle, position: 'relative' }}>
-          <div style={desktop
-            ? { width: '100%', height: '100%', background: 'rgba(0,34,51,0.5)' }
-            : { width: '100%', height: '100%', background: 'rgba(0,34,51,0.5)' }
-          }>
-            <img
-              key={imgIdx}
-              src={project.images[imgIdx]}
-              alt={`Demo de ${project.name}`}
-              className="w-full h-full object-cover project-image-fade"
-            />
-          </div>
-          {imgCount > 1 && (
+        <div style={wrapStyle} className="group/img">
+          <img
+            key={imgIdx}
+            src={project.images[imgIdx]}
+            alt={`Demo de ${project.name}`}
+            className="w-full h-full object-contain project-image-fade"
+          />
+          {/* Flechas solo en card activa y solo al hover */}
+          {isActive && imgCount > 1 && (
             <>
               <button
                 onClick={e => { e.stopPropagation(); handleImageNav(i, -1, imgCount) }}
+                className="opacity-0 group-hover/img:opacity-100 transition-opacity"
                 style={{
-                  position: 'absolute', left: desktop ? '28px' : '8px',
+                  position: 'absolute', left: '8px',
                   top: '50%', transform: 'translateY(-50%)',
                   width: '28px', height: '28px', borderRadius: '50%',
-                  border: 'none', background: 'rgba(0,34,51,0.75)',
+                  border: 'none', background: 'rgba(0,34,51,0.85)',
                   color: '#DDFF55', fontSize: '14px', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >‹</button>
               <button
                 onClick={e => { e.stopPropagation(); handleImageNav(i, 1, imgCount) }}
+                className="opacity-0 group-hover/img:opacity-100 transition-opacity"
                 style={{
                   position: 'absolute', right: '8px',
                   top: '50%', transform: 'translateY(-50%)',
                   width: '28px', height: '28px', borderRadius: '50%',
-                  border: 'none', background: 'rgba(0,34,51,0.75)',
+                  border: 'none', background: 'rgba(0,34,51,0.85)',
                   color: '#DDFF55', fontSize: '14px', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >›</button>
+              {/* Dots de imagen */}
+              <div style={{ position: 'absolute', bottom: '10px', left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: '4px' }}>
+                {project.images.map((_, j) => (
+                  <div key={j} style={{
+                    width: j === imgIdx ? '14px' : '5px', height: '5px', borderRadius: '3px',
+                    background: j === imgIdx ? '#DDFF55' : 'rgba(255,255,255,0.25)',
+                    transition: 'all 0.3s ease',
+                  }} />
+                ))}
+              </div>
             </>
           )}
         </div>
@@ -176,16 +226,17 @@ const Projects = () => {
 
     return (
       <div style={desktop
-        ? { width: '44%', flexShrink: 0, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid rgba(192,214,234,0.06)' }
+        ? { width: '44%', flexShrink: 0, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid rgba(192,214,234,0.06)', background: 'rgba(17,66,93,0.25)' }
         : { aspectRatio: '16/9', borderBottom: '1px solid rgba(192,214,234,0.08)' }
       }>
         <div style={{
-          width: '100%', height: '100%',
-          background: 'rgba(17,66,93,0.4)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px',
         }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: 'rgba(192,214,234,0.25)', letterSpacing: '0.1em' }}>
-            DEMO PRÓXIMAMENTE
+          <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(221,255,85,0.08)', border: '1px solid rgba(221,255,85,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '16px' }}>🚧</span>
+          </div>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', color: 'rgba(192,214,234,0.25)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            Demo próximamente
           </span>
         </div>
       </div>
@@ -193,8 +244,8 @@ const Projects = () => {
   }
 
   const renderContent = (project: Project, desktop: boolean) => (
-    <div style={{ flex: 1, minWidth: 0, padding: desktop ? '24px 28px' : '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ marginBottom: '12px' }}>
+    <div style={{ flex: 1, minWidth: 0, padding: desktop ? '28px 32px' : '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ marginBottom: '10px' }}>
         <span style={{
           background: project.status === 'Completado' ? 'rgba(221,255,85,0.15)' : 'rgba(192,214,234,0.1)',
           color: project.status === 'Completado' ? '#DDFF55' : '#C0D6EA',
@@ -212,7 +263,7 @@ const Projects = () => {
         {project.name}
       </h3>
       <p style={{
-        fontSize: '13px', color: 'rgba(192,214,234,0.6)', lineHeight: '1.65', marginBottom: '14px',
+        fontSize: '13px', color: 'rgba(192,214,234,0.6)', lineHeight: '1.65', marginBottom: '16px',
         ...(desktop ? { overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' } : {}),
       }}>
         {project.desc}
@@ -229,7 +280,7 @@ const Projects = () => {
           </span>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '16px', marginTop: 'auto' }}>
         {project.demo && (
           <a href={project.demo} target="_blank" rel="noopener noreferrer"
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: 'rgba(192,214,234,0.4)', textDecoration: 'none', letterSpacing: '0.08em', transition: 'color 0.2s' }}
@@ -271,14 +322,23 @@ const Projects = () => {
       <div
         className="hidden lg:block"
         style={{ opacity: isInView ? 1 : 0, transform: isInView ? 'translateY(0)' : 'translateY(32px)', transition: 'opacity 0.7s, transform 0.7s' }}
+        onMouseEnter={() => { isHoveredRef.current = true }}
+        onMouseLeave={() => { isHoveredRef.current = false }}
       >
-        <div ref={containerRef} style={{ overflow: 'hidden', position: 'relative' }}>
+        <div
+          ref={containerRef}
+          style={{ overflow: 'hidden', position: 'relative', cursor: 'grab' }}
+          onWheel={handleWheel}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+        >
           <div
             style={{
               display: 'flex',
               gap: `${PROJECT_GAP}px`,
               transition: 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               transform: `translateX(${translateX}px)`,
+              userSelect: 'none',
             }}
           >
             {projects.map((project, i) => {
@@ -301,10 +361,10 @@ const Projects = () => {
                     opacity: isActive ? 1 : 0.42,
                     transform: `scale(${isActive ? 1 : 0.96})`,
                     transition: 'opacity 0.45s, transform 0.45s, border-color 0.3s',
-                    cursor: isActive ? 'default' : 'pointer',
+                    cursor: isActive ? 'grab' : 'pointer',
                   }}
                 >
-                  {renderMedia(project, i, true)}
+                  {renderMedia(project, i, true, isActive)}
                   {renderContent(project, true)}
                 </div>
               )
@@ -315,7 +375,7 @@ const Projects = () => {
         {/* Navegación: flechas + dots */}
         <div className="flex justify-center items-center gap-6 mt-10">
           <button
-            onClick={() => setActiveIndex(i => (i - 1 + projects.length) % projects.length)}
+            onClick={() => navigate(-1)}
             style={{
               width: '40px', height: '40px', borderRadius: '50%',
               background: 'rgba(192,214,234,0.08)', border: '1px solid rgba(192,214,234,0.15)',
@@ -341,7 +401,7 @@ const Projects = () => {
           </div>
 
           <button
-            onClick={() => setActiveIndex(i => (i + 1) % projects.length)}
+            onClick={() => navigate(1)}
             style={{
               width: '40px', height: '40px', borderRadius: '50%',
               background: 'rgba(192,214,234,0.08)', border: '1px solid rgba(192,214,234,0.15)',
@@ -370,7 +430,7 @@ const Projects = () => {
             onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(221,255,85,0.3)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(192,214,234,0.08)')}
           >
-            {renderMedia(project, i, false)}
+            {renderMedia(project, i, false, true)}
             {renderContent(project, false)}
           </div>
         ))}

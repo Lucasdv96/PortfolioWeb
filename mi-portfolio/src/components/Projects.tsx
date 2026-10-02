@@ -108,14 +108,32 @@ const Projects = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // Medición del contenedor
+  // Medición del contenedor + listener no-pasivo para trackpad
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
     setContainerWidth(el.offsetWidth)
     const obs = new ResizeObserver(() => setContainerWidth(el.offsetWidth))
     obs.observe(el)
-    return () => obs.disconnect()
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2 && Math.abs(e.deltaX) > 25) {
+        e.preventDefault() // evita que el browser interprete el swipe como "atrás/adelante"
+        const now = Date.now()
+        if (now - lastWheelRef.current > 700) {
+          lastWheelRef.current = now
+          setActiveIndex(i => e.deltaX > 0
+            ? (i + 1) % projects.length
+            : (i - 1 + projects.length) % projects.length)
+        }
+      }
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+
+    return () => {
+      obs.disconnect()
+      el.removeEventListener('wheel', onWheel)
+    }
   }, [])
 
   // Teclado ← →
@@ -130,17 +148,6 @@ const Projects = () => {
 
   const navigate = (dir: 1 | -1) => {
     setActiveIndex(i => (i + dir + projects.length) % projects.length)
-  }
-
-  // Trackpad horizontal swipe
-  const handleWheel = (e: React.WheelEvent) => {
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2 && Math.abs(e.deltaX) > 25) {
-      const now = Date.now()
-      if (now - lastWheelRef.current > 700) {
-        lastWheelRef.current = now
-        navigate(e.deltaX > 0 ? 1 : -1)
-      }
-    }
   }
 
   // Drag / swipe con mouse o touch
@@ -328,7 +335,6 @@ const Projects = () => {
         <div
           ref={containerRef}
           style={{ overflow: 'hidden', position: 'relative', cursor: 'grab' }}
-          onWheel={handleWheel}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
         >

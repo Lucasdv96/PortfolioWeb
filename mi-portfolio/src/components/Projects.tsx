@@ -127,21 +127,21 @@ const Projects = () => {
     const imgCount = project.images?.length ?? 0
     const imgIdx = currentImageIndex[i] || 0
     const wrapStyle: React.CSSProperties = desktop
-      ? { width: '42%', flexShrink: 0, padding: '20px 0 20px 20px', display: 'flex', alignItems: 'center' }
+      ? { width: '44%', flexShrink: 0, height: '100%', overflow: 'hidden', position: 'relative' }
       : { aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }
 
     if (imgCount > 0) {
       return (
         <div style={{ ...wrapStyle, position: 'relative' }}>
           <div style={desktop
-            ? { width: '100%', borderRadius: '8px', overflow: 'hidden', aspectRatio: '16/9', background: 'rgba(0,34,51,0.5)' }
+            ? { width: '100%', height: '100%', background: 'rgba(0,34,51,0.5)' }
             : { width: '100%', height: '100%', background: 'rgba(0,34,51,0.5)' }
           }>
             <img
               key={imgIdx}
               src={project.images[imgIdx]}
               alt={`Demo de ${project.name}`}
-              className="w-full h-full object-contain project-image-fade"
+              className="w-full h-full object-cover project-image-fade"
             />
           </div>
           {imgCount > 1 && (
@@ -176,14 +176,12 @@ const Projects = () => {
 
     return (
       <div style={desktop
-        ? { width: '42%', flexShrink: 0, padding: '20px 0 20px 20px', display: 'flex', alignItems: 'center' }
+        ? { width: '44%', flexShrink: 0, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRight: '1px solid rgba(192,214,234,0.06)' }
         : { aspectRatio: '16/9', borderBottom: '1px solid rgba(192,214,234,0.08)' }
       }>
         <div style={{
-          width: '100%',
-          ...(desktop ? { aspectRatio: '16/9', borderRadius: '8px' } : { height: '100%' }),
+          width: '100%', height: '100%',
           background: 'rgba(17,66,93,0.4)',
-          border: '1px solid rgba(192,214,234,0.08)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: 'rgba(192,214,234,0.25)', letterSpacing: '0.1em' }}>
@@ -195,7 +193,7 @@ const Projects = () => {
   }
 
   const renderContent = (project: Project, desktop: boolean) => (
-    <div style={{ flex: 1, minWidth: 0, padding: desktop ? '24px 28px' : '24px' }}>
+    <div style={{ flex: 1, minWidth: 0, padding: desktop ? '24px 28px' : '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <div style={{ marginBottom: '12px' }}>
         <span style={{
           background: project.status === 'Completado' ? 'rgba(221,255,85,0.15)' : 'rgba(192,214,234,0.1)',
@@ -213,7 +211,10 @@ const Projects = () => {
       <h3 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: desktop ? '22px' : '16px', color: '#F6F2E8', marginBottom: '10px' }}>
         {project.name}
       </h3>
-      <p style={{ fontSize: '13px', color: 'rgba(192,214,234,0.6)', lineHeight: '1.65', marginBottom: '14px' }}>
+      <p style={{
+        fontSize: '13px', color: 'rgba(192,214,234,0.6)', lineHeight: '1.65', marginBottom: '14px',
+        ...(desktop ? { overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' } : {}),
+      }}>
         {project.desc}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
@@ -271,7 +272,7 @@ const Projects = () => {
         className="hidden lg:block"
         style={{ opacity: isInView ? 1 : 0, transform: isInView ? 'translateY(0)' : 'translateY(32px)', transition: 'opacity 0.7s, transform 0.7s' }}
       >
-        <div ref={containerRef} style={{ overflowX: 'clip', position: 'relative' }}>
+        <div ref={containerRef} style={{ overflow: 'hidden', position: 'relative' }}>
           <div
             style={{
               display: 'flex',
@@ -288,6 +289,8 @@ const Projects = () => {
                   onClick={() => !isActive && setActiveIndex(i)}
                   style={{
                     minWidth: `${cardWidth}px`,
+                    maxWidth: `${cardWidth}px`,
+                    height: '380px',
                     flexShrink: 0,
                     display: 'flex',
                     flexDirection: 'row',

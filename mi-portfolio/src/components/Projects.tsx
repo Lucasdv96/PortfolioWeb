@@ -11,6 +11,7 @@ type Project = {
   demo: string | null
   github: string
   status: string
+  siteUrl?: string  // si está seteado muestra tarjeta "ver en vivo" en lugar de imágenes
 }
 
 const projects: Project[] = [
@@ -58,6 +59,17 @@ const projects: Project[] = [
   },
   {
     num: '004',
+    name: 'Vitrina Metamorfosis',
+    desc: 'Sitio vitrina para una librería de libros usados en Mar del Plata. Catálogo con búsqueda por título/autor, filtros por estado, género y precio, y contacto directo por WhatsApp/Instagram sin carrito ni pago online.',
+    tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Google Sheets', 'Vercel'],
+    images: [],
+    demo: 'https://vitrina-metarmorfosis-libros.vercel.app/',
+    github: 'https://github.com/Lucasdv96/Vitrina_Metarmorfosis_Libros',
+    status: 'Completado',
+    siteUrl: 'https://vitrina-metarmorfosis-libros.vercel.app/',
+  },
+  {
+    num: '005',
     name: 'Gestor de Torneos',
     desc: 'Web app para organizar torneos de tenis de hasta 100 jugadores. Registro público sin autenticación, cuadro de eliminación directa y panel de administración mobile-first con avance automático de ganadores por ronda.',
     tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
@@ -178,6 +190,50 @@ const Projects = () => {
     const wrapStyle: React.CSSProperties = desktop
       ? { width: '44%', flexShrink: 0, height: '100%', overflow: 'hidden', position: 'relative', background: 'rgba(0,20,34,0.6)' }
       : { aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }
+
+    // Tarjeta "ver en vivo" para proyectos con siteUrl
+    if (project.siteUrl && imgCount === 0) {
+      return (
+        <a
+          href={project.siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+          style={desktop
+            ? { width: '44%', flexShrink: 0, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', position: 'relative', overflow: 'hidden', background: 'linear-gradient(145deg, #1a0f08 0%, #2d1a0e 50%, #1a0f08 100%)', cursor: 'pointer', gap: '0' }
+            : { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', aspectRatio: '16/9', background: 'linear-gradient(145deg, #1a0f08 0%, #2d1a0e 100%)', position: 'relative', overflow: 'hidden' }
+          }
+          className="group/site"
+        >
+          {/* Patrón de fondo */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,220,160,0.03) 0px, rgba(255,220,160,0.03) 1px, transparent 1px, transparent 28px), repeating-linear-gradient(90deg, rgba(255,220,160,0.03) 0px, rgba(255,220,160,0.03) 1px, transparent 1px, transparent 28px)',
+            pointerEvents: 'none',
+          }} />
+          {/* Nombre */}
+          <div style={{ textAlign: 'center', zIndex: 1, padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontFamily: 'Georgia, serif', fontSize: desktop ? '11px' : '9px', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,200,120,0.5)', display: 'block' }}>
+              Librería
+            </span>
+            <span style={{ fontFamily: 'Georgia, serif', fontWeight: 700, fontSize: desktop ? '26px' : '20px', letterSpacing: '0.04em', color: '#f5e6c8', lineHeight: 1.1, display: 'block' }}>
+              Metamorfosis
+            </span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '8px', letterSpacing: '0.15em', color: 'rgba(245,230,200,0.35)', textTransform: 'uppercase' }}>
+              Mar del Plata
+            </span>
+            {/* Botón hover */}
+            <div
+              className="opacity-0 group-hover/site:opacity-100 transition-all duration-300"
+              style={{ marginTop: '12px', padding: '7px 18px', border: '1px solid rgba(255,200,120,0.5)', borderRadius: '4px', background: 'rgba(255,200,120,0.08)', display: 'flex', alignItems: 'center', gap: '6px', transform: 'translateY(4px)' }}
+            >
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: '#f5c97a', letterSpacing: '0.08em' }}>Ver sitio en vivo</span>
+              <span style={{ fontSize: '10px', color: '#f5c97a' }}>↗</span>
+            </div>
+          </div>
+        </a>
+      )
+    }
 
     if (imgCount > 0) {
       return (
